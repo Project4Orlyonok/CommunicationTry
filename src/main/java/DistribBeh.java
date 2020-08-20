@@ -44,25 +44,7 @@ public class DistribBeh extends Behaviour {
                     myAgent.send(message);
                 }
 
-//                MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchProtocol("Access"), MessageTemplate.MatchTopic(topic));
-            myAgent.addBehaviour(new Behaviour() {
-                @Override
-                public void action() {
-                    MessageTemplate mt1 = MessageTemplate.MatchProtocol("Access");
-                    ACLMessage rMsg = myAgent.receive(mt1);
-//                System.out.println(topic.getLocalName());
-                    if (rMsg != null){
-                        System.out.println(rMsg);
-                    }else {
-                        block();
-                    }
-                }
-
-                @Override
-                public boolean done() {
-                    return false;
-                }
-            });
+                myAgent.addBehaviour(new RequestBeh(topic, receivedMsg, sender));
 //                System.out.println(topicList);
 //                if (rMsg != null){
 //                    System.out.println(rMsg.getContent() + " ответил " + rMsg.getSender().getLocalName() + " в топик " + topic.getLocalName());

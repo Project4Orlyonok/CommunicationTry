@@ -31,33 +31,35 @@ public class GenBehStart extends Behaviour {
             reply.setProtocol("Access");
             reply.setContent(topic.getLocalName() + " ok");
             myAgent.send(reply);
-            System.out.println(reply);
+//            System.out.println(reply);
 
-            MessageTemplate mt2 = MessageTemplate.and(MessageTemplate.MatchProtocol("Power"),
-                    MessageTemplate.MatchTopic(topic));
-            ACLMessage receivedMsg2 = myAgent.receive(mt2);
-            if ((receivedMsg2 != null)) {
+            myAgent.addBehaviour(new GenPrice(time, topic));
+
+//            MessageTemplate mt2 = MessageTemplate.and(MessageTemplate.MatchProtocol("Power"),
+//                    MessageTemplate.MatchTopic(topic));
+//            ACLMessage receivedMsg2 = myAgent.receive(mt2);
+//            if ((receivedMsg2 != null)) {
 //                System.out.println(receivedMsg2.getContent());
-//                if (Double.parseDouble(receivedMsg2.getContent()) <= power.pow(time.getCurrentTime())) {
-                    ACLMessage message = new ACLMessage(ACLMessage.INFORM);
-                    message.addReceiver(topic);
-                    message.setProtocol("Price");
-                    message.setContent(String.valueOf(power.pri(time.getCurrentTime())));
-                    myAgent.send(message);
-//                }
-            }else {
-                block();
-            }
-            MessageTemplate mt3 = MessageTemplate.and(MessageTemplate.MatchProtocol("Winner"),
-                    MessageTemplate.MatchTopic(topic));
-            ACLMessage receivedMsg3 = myAgent.receive(mt3);
-            if (receivedMsg3 != null) {
-//                System.out.println("ok");
-//                power.powmin(time.getCurrentTime(), Double.parseDouble(receivedMsg2.getContent()));
-
-            }else {
-                block();
-            }
+////                if (Double.parseDouble(receivedMsg2.getContent()) <= power.pow(time.getCurrentTime())) {
+//                    ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+//                    message.addReceiver(topic);
+//                    message.setProtocol("Price");
+//                    message.setContent(String.valueOf(power.pri(time.getCurrentTime())));
+//                    myAgent.send(message);
+////                }
+//            }else {
+//                block();
+//            }
+//            MessageTemplate mt3 = MessageTemplate.and(MessageTemplate.MatchProtocol("Winner"),
+//                    MessageTemplate.MatchTopic(topic));
+//            ACLMessage receivedMsg3 = myAgent.receive(mt3);
+//            if (receivedMsg3 != null) {
+////                System.out.println("ok");
+////                power.powmin(time.getCurrentTime(), Double.parseDouble(receivedMsg2.getContent()));
+//
+//            }else {
+//                block();
+//            }
         }else {
             block();
         }

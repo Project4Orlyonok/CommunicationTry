@@ -1,4 +1,5 @@
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -10,7 +11,7 @@ import java.util.Random;
 
 public class ConsumerBeh extends TickerBehaviour {
     public Time time;
-    Const poww = new Const();
+    private Const poww = new Const();
 
     //    List<Double> pow=Arrays.asList(1.0,2.4,3.7,4.0,5.8);
     public ConsumerBeh(Agent a, long period, Time time) {
@@ -29,13 +30,25 @@ public class ConsumerBeh extends TickerBehaviour {
         message.setProtocol("NeedAuction");
         message.addReceiver(myAgent.getAID("Distributor"));
         myAgent.send(message);
-        MessageTemplate mt = MessageTemplate.MatchProtocol("End");
-        ACLMessage receivedMsg = myAgent.receive(mt);
-        if (receivedMsg != null) {
-            System.out.println("Deal: " + receivedMsg.getContent());
-//            flag = true;
-        }
-        block();
+        myAgent.addBehaviour(new Behaviour() {
+            boolean stop = false;
+
+            @Override
+            public void action() {
+                MessageTemplate mt = MessageTemplate.MatchProtocol("End");
+                ACLMessage receivedMsg = myAgent.receive(mt);
+                if (receivedMsg != null) {
+                    System.out.println("Deal " + myAgent.getLocalName() + ": " + receivedMsg.getContent());
+                    stop = true;
+                }
+                block();
+            }
+
+            @Override
+            public boolean done() {
+                return stop;
+            }
+        });
 //        ожидание сообщ от дистр о вышло/не вышло
     }
 }
