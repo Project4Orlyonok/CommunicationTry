@@ -23,6 +23,7 @@ public class GenBehDur extends Behaviour {
         if ((receivedMsg != null)) {
             switch (receivedMsg.getProtocol()) {
                 case "Power": {
+//                    System.out.println(receivedMsg.getContent() + " " + myAgent.getLocalName());
                     if (Double.parseDouble(receivedMsg.getContent()) <= power.pow(time.getCurrentTime())) {
                         ACLMessage message = new ACLMessage(ACLMessage.INFORM);
                         message.addReceiver(topic);
@@ -42,8 +43,7 @@ public class GenBehDur extends Behaviour {
 //                    }
                     break;
                 }
-
-                    case "Winner": {
+                case "Winner": {
                     power.powmin(time.getCurrentTime(), Double.parseDouble(receivedMsg.getContent()));
 
 //                    System.out.println(receivedMsg.getContent());
@@ -54,6 +54,7 @@ public class GenBehDur extends Behaviour {
 
 
         }
+        block();
     }
 
     @Override

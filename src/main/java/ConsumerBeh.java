@@ -25,15 +25,17 @@ public class ConsumerBeh extends TickerBehaviour {
         double pow = poww.pow(time.getCurrentTime());
         ACLMessage message = new ACLMessage(ACLMessage.INFORM);
         message.setContent(String.valueOf(pow));
+        System.out.println(myAgent.getLocalName() + " запросил " + pow);
         message.setProtocol("NeedAuction");
         message.addReceiver(myAgent.getAID("Distributor"));
         myAgent.send(message);
         MessageTemplate mt = MessageTemplate.MatchProtocol("End");
         ACLMessage receivedMsg = myAgent.receive(mt);
         if (receivedMsg != null) {
-            System.out.println(receivedMsg.getContent());
+            System.out.println("Deal: " + receivedMsg.getContent());
 //            flag = true;
         }
+        block();
 //        ожидание сообщ от дистр о вышло/не вышло
     }
 }
